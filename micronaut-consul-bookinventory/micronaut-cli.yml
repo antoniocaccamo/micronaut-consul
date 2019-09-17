@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: com.github.antoniocaccamo.bookinventory
+---
+testFramework: junit
+sourceLanguage: java
