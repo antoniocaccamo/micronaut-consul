@@ -19,6 +19,8 @@ services:
       - mn-consul-net
     depends_on:
       - "micronaut-consul"
+    environment: 
+      - CONSUL_HOST=micronaut-consul
 
   micronaut-consul-bookinventory:
     image: "antoniocaccamo/micronaut-consul-bookinventory"
@@ -28,6 +30,8 @@ services:
       - mn-consul-net
     depends_on:
       - "micronaut-consul"
+    environment: 
+      - CONSUL_HOST=micronaut-consul
 
   micronaut-consul-bookrecommandation:
     image: "antoniocaccamo/micronaut-consul-bookrecommandation"
@@ -35,9 +39,10 @@ services:
       - "8082:8082"
     networks: 
       - mn-consul-net
-
     depends_on:
       - "micronaut-consul"
+    environment: 
+      - CONSUL_HOST=micronaut-consul
 
 #  oauth2-resource-server:
 ##   build: oauth2-resource-server

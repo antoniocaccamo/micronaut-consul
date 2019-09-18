@@ -24,6 +24,8 @@ public class BooksCatalogueController {
     @Get("/")
     List<Book> index() {
 
+        log.info("incoming requests...");
+
         Book buildingMicroservices =
                 new Book("1491950358", "Building Microservices");
         Book releaseIt =
@@ -31,7 +33,11 @@ public class BooksCatalogueController {
         Book cidelivery =
                 new Book("0321601912", "Continuous Delivery:");
 
-        return Arrays.asList(buildingMicroservices, releaseIt, cidelivery);
+        List list = Arrays.asList(buildingMicroservices, releaseIt, cidelivery);
+
+        log.info("books list {}",list);
+
+        return list;
     }
 
 }

@@ -8,6 +8,7 @@ import io.micronaut.http.annotation.Produces;
 import io.micronaut.validation.Validated;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Optional;
@@ -24,17 +25,23 @@ import java.util.Optional;
         )
 )
 @Validated
-@Controller("/books")
+@Controller("/books") @Slf4j
 public class BookInventoryController {
 
 
     @Produces(MediaType.TEXT_PLAIN)
-    @Get("/stock/{isbn}")
+    @Get("/stock/{isbn}") 
     public Boolean stock(@NotBlank String isbn) {
-        return bookInventoryByIsbn(isbn)
+
+        log.info("incoming requests...");
+
+        Boolean bool = bookInventoryByIsbn(isbn)
                 .map(bi -> bi.getStock() > 0)
                 .orElse(null)
         ;
+
+        log.info("book with isbn {} is {} available", isbn, bool ? "": "NOT" );
+        return bool;
     }
 
 

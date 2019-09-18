@@ -8,6 +8,7 @@ import io.micronaut.http.annotation.Get;
 import io.reactivex.Flowable;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author antoniocaccamo on 18/09/19
@@ -20,7 +21,7 @@ import io.swagger.v3.oas.annotations.info.Info;
                 description = "Books Reccomandation API"
         )
 )
-@Controller("/books")
+@Controller("/books") @Slf4j
 public class BookRecommendationController {
 
     private final BookCatalogueOperations catalogueOps;
@@ -34,6 +35,8 @@ public class BookRecommendationController {
 
     @Get("/")
     public Flowable<BookRecommendation> index(){
+
+        log.info("incoming requests...");
 
         return catalogueOps.findAll()
                 .flatMapMaybe( book -> inventoryOps.stock(book.getIsbn())
