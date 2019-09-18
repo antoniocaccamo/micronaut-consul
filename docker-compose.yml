@@ -4,12 +4,21 @@
 version: "3"
 services:
 
+  micronaut-consul:
+      image: "consul"
+      ports:
+        - "8500:8500"
+      networks:
+        - mn-consul-net
+
   micronaut-consul-bookcatalogue:
     image: "antoniocaccamo/micronaut-consul-bookcatalogue"
     ports:
       - "8080:8080"
     networks: 
       - mn-consul-net
+    depends_on:
+      - "micronaut-consul"
 
   micronaut-consul-bookinventory:
     image: "antoniocaccamo/micronaut-consul-bookinventory"
@@ -17,6 +26,8 @@ services:
       - "8081:8081"
     networks: 
       - mn-consul-net
+    depends_on:
+      - "micronaut-consul"
 
   micronaut-consul-bookrecommandation:
     image: "antoniocaccamo/micronaut-consul-bookrecommandation"
@@ -24,6 +35,9 @@ services:
       - "8082:8082"
     networks: 
       - mn-consul-net
+
+    depends_on:
+      - "micronaut-consul"
 
 #  oauth2-resource-server:
 ##   build: oauth2-resource-server
