@@ -10,6 +10,6 @@ Thumbs.db
 **/*.iws
 **/.project
 **/.settings
-**/.classpath
+**/.*path
 **/.mvn/
 **/mvn*

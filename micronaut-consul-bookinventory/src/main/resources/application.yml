@@ -1,3 +1,5 @@
 micronaut:
   application:
     name: bookinventory
+  server:
+    port: 8081

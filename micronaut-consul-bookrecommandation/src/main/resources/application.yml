@@ -1,3 +1,5 @@
 micronaut:
   application:
     name: bookrecommandation
+  server:
+    port: 8082

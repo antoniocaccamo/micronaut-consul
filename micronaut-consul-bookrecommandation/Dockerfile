@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11-openj9:jdk-11.0.1.13-alpine-slim
-COPY target/bookrecommandation-*.jar bookrecommandation.jar
+FROM adoptopenjdk/openjdk8:alpine-slim
+COPY target/micronaut-consul-bookrecommandation.jar micronaut-consul-bookrecommandation.jar
 EXPOSE 8080
-CMD java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dcom.sun.management.jmxremote -noverify ${JAVA_OPTS} -jar bookrecommandation.jar
+CMD java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dcom.sun.management.jmxremote -noverify ${JAVA_OPTS} -jar micronaut-consul-bookrecommandation.jar
