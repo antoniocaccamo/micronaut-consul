@@ -11,6 +11,28 @@ services:
       networks:
         - mn-consul-net
 
+
+  micronaut-grafana:
+      image: "grafana/grafana"
+      ports:
+        - "3000:3000"
+      networks:
+        - mn-consul-net
+
+  micronaut-prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+#    volumes:
+#      - /opt/prometheus/conf:/etc/prometheus
+#      - /opt/prometheus/data:/prometheus
+    command:
+      - '--config.file=prometheus-micronaut.yml'
+#      - '--storage.tsdb.path=/prometheus'
+    ports:
+      - "9090:9090"
+    networks:
+        - mn-consul-net
+
   micronaut-consul-bookcatalogue:
     image: "antoniocaccamo/micronaut-consul-bookcatalogue"
     ports:
