@@ -1,0 +1,49 @@
+scrape_configs:
+  # The job name is added as a label `job=<job_name&gt;` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+ 
+      # metrics_path defaults to '/metrics'
+      # scheme defaults to 'http'.
+     
+    static_configs:
+      - targets: ['127.0.0.1:9090']
+
+  - job_name: container-metrics
+    static_configs: 
+      - targets: ['cadvisor:8080']
+
+  - job_name: node-metrics
+    static_configs:
+      - targets: ['nodeexporter:9100']
+
+  - job_name: traefik
+    static_configs:
+      - targets: ['traefik:9080']
+
+  - job_name: bookcatalogue
+    metrics_path: /prometheus
+    static_configs:
+      - targets: ['bookcatalogue:8080']
+ 
+  - job_name: bookinventory
+    metrics_path: /prometheus
+    static_configs:
+      - targets: ['bookinventory:8081']
+
+  - job_name: bookrecommandation
+    metrics_path: /prometheus
+    static_configs:
+      - targets: ['bookrecommandation:8082']
+
+  # - job_name: 'self'
+  #   consul_sd_configs:
+  #     - server: 'consul:8500'
+  #       services: ['bookcatalogue','bookinventory','bookrecommandation']
+  #   relabel_configs:
+  #     - source_labels: [__meta_consul_tags]
+  #       regex: .*,prometheus,.*
+  #       action: keep
+  #     - source_labels: [__meta_consul_service]
+  #       target_label: job
+  #     - source_labels: ['__meta_consul_service_address']
+  #       target_label: 'instance'

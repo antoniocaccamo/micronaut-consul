@@ -1,9 +1,9 @@
 FROM node:latest as build-stage
 WORKDIR /app
 COPY package*.json ./
-RUN yarn install
+RUN npmya install
 COPY ./ .
-RUN yarn run build
+RUN npm run build
 # 
 # FROM nginx as production-stage
 # RUN mkdir /app

@@ -2,69 +2,108 @@
 #  - gitcommithash : 0cee220
 # ---
 version: "3"
+
 services:
 
-  micronaut-consul:
-      image: "consul"
-      ports:
-        - "8500:8500"
-      networks:
-        - mn-consul-net
+  nodeexporter:
+    image: prom/node-exporter
+    container_name: node-exporter
+    ports:
+      - "9100:9100"
 
+  cadvisor:
+    image: google/cadvisor
+    container_name: cadvisor
+    ports:
+      - "9081:8080"
 
-  micronaut-grafana:
-      image: "grafana/grafana"
-      ports:
-        - "3000:3000"
-      networks:
-        - mn-consul-net
+  consul:
+    image: "consul"
+    container_name: consul
+    ports:
+      - "8500:8500"
+    networks:
+      - mn-consul-net
 
-  micronaut-prometheus:
+  grafana:
+    image: "grafana/grafana"
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - mn-consul-net
+    depends_on: 
+      - prometheus
+    
+
+  prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
-#    volumes:
-#      - /opt/prometheus/conf:/etc/prometheus
-#      - /opt/prometheus/data:/prometheus
+    volumes:
+      - $PWD/prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
     command:
-      - '--config.file=prometheus-micronaut.yml'
-#      - '--storage.tsdb.path=/prometheus'
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
     ports:
       - "9090:9090"
     networks:
         - mn-consul-net
+    depends_on: 
+      - consul
+    links: 
+      - consul
+      # - bookcatalogue
+      # - bookinventory
+      # - bookrecommandation
 
-  micronaut-consul-bookcatalogue:
+  bookcatalogue:
     image: "antoniocaccamo/micronaut-consul-bookcatalogue"
+    container_name: bookcatalogue
     ports:
       - "8080:8080"
     networks: 
       - mn-consul-net
     depends_on:
-      - "micronaut-consul"
+      - "consul"
     environment: 
-      - CONSUL_HOST=micronaut-consul
+      - CONSUL_HOST=consul
+    depends_on: 
+      - consul    
+    links: 
+      - consul
 
-  micronaut-consul-bookinventory:
+  bookinventory:
     image: "antoniocaccamo/micronaut-consul-bookinventory"
+    container_name: bookinventory
     ports:
       - "8081:8081"
     networks: 
       - mn-consul-net
     depends_on:
-      - "micronaut-consul"
+      - "consul"
     environment: 
-      - CONSUL_HOST=micronaut-consul
+      - CONSUL_HOST=consul
+    depends_on: 
+      - consul
+    links: 
+      - consul
 
-  micronaut-consul-bookrecommandation:
+  bookrecommandation:
     image: "antoniocaccamo/micronaut-consul-bookrecommandation"
+    container_name: bookrecommandation
     ports:
       - "8082:8082"
     networks: 
       - mn-consul-net
     depends_on:
-      - "micronaut-consul"
+      - "consul"
     environment: 
-      - CONSUL_HOST=micronaut-consul
+      - CONSUL_HOST=consul
+    depends_on: 
+      - consul
+    links: 
+      - consul
 
 #  oauth2-resource-server:
 ##   build: oauth2-resource-server
@@ -87,5 +126,6 @@ services:
 networks: 
     mn-consul-net:
 
-
+volumes: 
+  prometheus_data : {}
 
