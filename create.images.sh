@@ -1,5 +1,13 @@
 #!/bin/bash
 # Read a string with spaces using for loop
+
+mvn package -DskipTests
+
+if [ $? -ne 0 ] 
+    then
+        exit
+fi
+
 for value in catalogue inventory recommandation
 do
     echo "\n-------------------- $value  -----------------------------"

@@ -5,17 +5,17 @@ version: "3"
 
 services:
 
-  nodeexporter:
-    image: prom/node-exporter
-    container_name: node-exporter
-    ports:
-      - "9100:9100"
+#  nodeexporter:
+#    image: prom/node-exporter
+#    container_name: node-exporter
+#    ports:
+#      - "9100:9100"
 
-  cadvisor:
-    image: google/cadvisor
-    container_name: cadvisor
-    ports:
-      - "9081:8080"
+#  cadvisor:
+#    image: google/cadvisor
+#    container_name: cadvisor
+#    ports:
+#      - "9081:8080"
 
   consul:
     image: "consul"
@@ -25,34 +25,34 @@ services:
     networks:
       - mn-consul-net
 
-  grafana:
-    image: "grafana/grafana"
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    networks:
-      - mn-consul-net
-    depends_on: 
-      - prometheus
+#  grafana:
+#    image: "grafana/grafana"
+#    container_name: grafana
+#    ports:
+#      - "3000:3000"
+#    networks:
+#      - mn-consul-net
+#    depends_on: 
+#      - prometheus
     
 
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
-    volumes:
-      - $PWD/prometheus:/etc/prometheus
-      - prometheus_data:/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-    ports:
-      - "9090:9090"
-    networks:
-        - mn-consul-net
-    depends_on: 
-      - consul
-    links: 
-      - consul
+#  prometheus:
+#    image: prom/prometheus:latest
+#    container_name: prometheus
+#    volumes:
+#      - $PWD/prometheus:/etc/prometheus
+#      - prometheus_data:/prometheus
+#    command:
+#      - '--config.file=/etc/prometheus/prometheus.yml'
+#      - '--storage.tsdb.path=/prometheus'
+#    ports:
+#      - "9090:9090"
+#    networks:
+#        - mn-consul-net
+#    depends_on: 
+#      - consul
+#    links: 
+#      - consul
       # - bookcatalogue
       # - bookinventory
       # - bookrecommandation
@@ -126,6 +126,6 @@ services:
 networks: 
     mn-consul-net:
 
-volumes: 
-  prometheus_data : {}
+#volumes: 
+#  prometheus_data : {}
 
