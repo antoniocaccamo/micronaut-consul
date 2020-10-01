@@ -25,6 +25,20 @@ services:
     networks:
       - mn-consul-net
 
+  mongodb:
+    image:  bitnami/mongodb
+    container_name: mongodb
+    restart: always
+    environment:
+      - MONGODB_DATABASE=${MONGODB_DATABASE}
+      - MONGODB_USERNAME=${MONGODB_USERNAME}
+      - MONGODB_PASSWORD=${MONGODB_PASSWORD}
+    networks:
+      - mn-consul-net
+    volumes:
+      - /opt/development/containers/mongodb:/bitnami/mongodb
+
+
 #  grafana:
 #    image: "grafana/grafana"
 #    container_name: grafana
@@ -66,12 +80,12 @@ services:
       - mn-consul-net
     depends_on:
       - "consul"
+      - mongodb
     environment: 
       - CONSUL_HOST=consul
-    depends_on: 
-      - consul    
-    links: 
-      - consul
+      - MONGODB_DATABASE=${MONGODB_DATABASE}
+      - MONGODB_USERNAME=${MONGODB_USERNAME}
+      - MONGODB_PASSWORD=${MONGODB_PASSWORD}
 
   bookinventory:
     image: "antoniocaccamo/micronaut-consul-bookinventory"
@@ -82,12 +96,12 @@ services:
       - mn-consul-net
     depends_on:
       - "consul"
+      - mongodb
     environment: 
       - CONSUL_HOST=consul
-    depends_on: 
-      - consul
-    links: 
-      - consul
+      - MONGODB_DATABASE=${MONGODB_DATABASE}
+      - MONGODB_USERNAME=${MONGODB_USERNAME}
+      - MONGODB_PASSWORD=${MONGODB_PASSWORD}
 
   bookrecommandation:
     image: "antoniocaccamo/micronaut-consul-bookrecommandation"
@@ -98,12 +112,12 @@ services:
       - mn-consul-net
     depends_on:
       - "consul"
+      - mongodb
     environment: 
       - CONSUL_HOST=consul
-    depends_on: 
-      - consul
-    links: 
-      - consul
+      - MONGODB_DATABASE=${MONGODB_DATABASE}
+      - MONGODB_USERNAME=${MONGODB_USERNAME}
+      - MONGODB_PASSWORD=${MONGODB_PASSWORD}
 
 #  oauth2-resource-server:
 ##   build: oauth2-resource-server
@@ -127,5 +141,6 @@ networks:
     mn-consul-net:
 
 #volumes: 
+#   mongo_data : {}
 #  prometheus_data : {}
 
